@@ -35,7 +35,7 @@ npx skills add saturn-imanshu/prompt-to-mermaid-skill
 Clone or download this repository and symlink it into your skills directory:
 
 ```
-ln -s /path/to/prompt-to-mermaid-skill/prompt-to-mermaid ~/.claude/skills/prompt-to-mermaid
+ln -s /path/to/prompt-to-mermaid-skill ~/.claude/skills/prompt-to-mermaid
 ```
 
 ## How It Works

@@ -27,7 +27,7 @@ There is no automated test suite for skills. To test your changes:
 
 1. Symlink the skill into your local skills directory:
    ```
-   ln -s /path/to/prompt-to-mermaid-skill ~/.claude/skills/prompt-to-mermaid-skill
+   ln -s /path/to/prompt-to-mermaid-skill ~/.claude/skills/prompt-to-mermaid
    ```
 2. Open a Claude Code session.
 3. Trigger the skill by describing a system you want to build (e.g., "I want to build a task queue with retries").
