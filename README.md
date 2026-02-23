@@ -46,8 +46,9 @@ ln -s /path/to/prompt-to-mermaid-skill ~/.claude/skills/prompt-to-mermaid
 4. The skill auto-detects the optimal Mermaid diagram type based on the requirements.
 5. A Mermaid diagram is generated and presented for review.
 6. The user requests revisions or approves the diagram.
-7. The approved diagram and requirements summary are saved to `docs/diagrams/`.
-8. The user is prompted to load the diagram into future sessions for implementation.
+7. User chooses output format: `.mmd` (raw Mermaid) or `.md` (fenced code block for IDE/GitHub preview).
+8. The approved diagram and requirements summary are saved to `docs/diagrams/`.
+9. The user is prompted to load the diagram into future sessions for implementation.
 
 ## Cross-Agent Compatibility
 

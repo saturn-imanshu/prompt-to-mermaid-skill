@@ -23,7 +23,8 @@ digraph prompt_to_mermaid {
     "Generate Mermaid diagram" [shape=box];
     "User approves diagram?" [shape=diamond];
     "Revise diagram per feedback" [shape=box];
-    "Save .mmd file + show inline" [shape=box];
+    "Ask: output format?" [shape=diamond, label="Ask: .mmd or .md?"];
+    "Save file + show inline" [shape=box];
     "Prompt user to load diagram" [shape=doublecircle];
     "User declines" [shape=doublecircle, label="Skip — continue\nnormal flow"];
 
@@ -45,8 +46,9 @@ digraph prompt_to_mermaid {
     "Generate Mermaid diagram" -> "User approves diagram?";
     "User approves diagram?" -> "Revise diagram per feedback" [label="no"];
     "Revise diagram per feedback" -> "User approves diagram?";
-    "User approves diagram?" -> "Save .mmd file + show inline" [label="yes"];
-    "Save .mmd file + show inline" -> "Prompt user to load diagram";
+    "User approves diagram?" -> "Ask: output format?" [label="yes"];
+    "Ask: output format?" -> "Save file + show inline";
+    "Save file + show inline" -> "Prompt user to load diagram";
 }
 ```
 
@@ -167,17 +169,31 @@ Pick the type that best represents the PRIMARY relationship in the requirements:
 
 Once the user approves the diagram:
 
-1. **Save the file:** Write to `docs/diagrams/<topic-slug>.mmd` in the project root. Create directories if needed. Use a kebab-case slug derived from the topic.
+### 1. Ask output format
 
-2. **Save the requirements summary:** Write to `docs/diagrams/<topic-slug>-requirements.md` alongside the diagram.
+Use AskUserQuestion to let the user choose:
 
-3. **Prompt the user to load it:**
+| Format | File | Contents | Best for |
+|--------|------|----------|----------|
+| `.mmd` | `<topic-slug>.mmd` | Raw Mermaid syntax only | CLI tools, CI pipelines, Mermaid CLI rendering |
+| `.md` | `<topic-slug>.md` | Mermaid wrapped in ` ```mermaid ``` ` code fence | IDE preview (VS Code, IntelliJ with Mermaid extension), GitHub rendering |
 
-> Your Mermaid diagram has been saved to `docs/diagrams/<file>.mmd`.
+**Default recommendation:** `.md` — most IDEs and GitHub render mermaid code fences natively, giving instant visual preview without extra tooling.
+
+### 2. Save files
+
+- **Diagram:** Write to `docs/diagrams/<topic-slug>.mmd` or `docs/diagrams/<topic-slug>.md` based on user choice. Create directories if needed. Use a kebab-case slug derived from the topic.
+- **Requirements summary:** Write to `docs/diagrams/<topic-slug>-requirements.md` alongside the diagram.
+
+For `.md` format, structure the file as: a heading with the topic name, followed by the Mermaid code inside a fenced code block with the `mermaid` language identifier (triple backticks + mermaid).
+
+### 3. Prompt the user to load it
+
+> Your Mermaid diagram has been saved to `docs/diagrams/<file>`.
 >
 > To use this as a spec for implementation, load it into your next Claude session:
 >
-> - **Claude Code CLI:** Start your message with `@docs/diagrams/<file>.mmd` to add it to context
+> - **Claude Code CLI:** Start your message with `@docs/diagrams/<file>` to add it to context
 > - **Or:** Ask Claude to read the file at the start of your implementation session
 >
 > This gives the AI a machine-readable blueprint of your system — much more precise than prose descriptions.
