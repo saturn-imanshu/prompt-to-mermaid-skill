@@ -29,7 +29,7 @@ If you use `superpowers:brainstorming` or `superpowers:writing-plans`, invoke th
 ## Install
 
 ```
-npx skills add saturn-imanshu/build-mermaid-spec
+npx skills add MagicPlug/build-mermaid-spec
 ```
 
 ### Manual Install
