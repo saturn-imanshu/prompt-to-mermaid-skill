@@ -12,9 +12,9 @@ The skill operates in three phases:
 
 3. **Save and Context Loading** -- Saves the approved `.mmd` file and requirements summary to `docs/diagrams/`, then provides instructions for loading the diagram into future sessions as a machine-readable blueprint.
 
-### Superpowers Integration
+### Works After Superpowers
 
-This skill integrates with `superpowers:brainstorming` and `superpowers:writing-plans`. When those skills complete, prompt-to-mermaid offers to generate a diagram from the existing design or plan document, skipping the clarification phase entirely since requirements are already established.
+If you use `superpowers:brainstorming` or `superpowers:writing-plans`, invoke this skill afterward (say "generate a mermaid diagram from the plan" or `/prompt-to-mermaid`). It detects the existing plan in `docs/plans/` and skips straight to diagram generation -- no re-clarification needed.
 
 ### Auto-Detected Diagram Types
 
@@ -40,9 +40,9 @@ ln -s /path/to/prompt-to-mermaid-skill ~/.claude/skills/prompt-to-mermaid
 
 ## How It Works
 
-1. User describes an idea or a superpowers skill hands off a completed design/plan.
-2. If standalone: the skill asks clarifying questions one at a time until requirements are unambiguous.
-3. If from superpowers: the skill reads the existing design/plan document and skips clarification.
+1. User describes an idea, or invokes the skill after a superpowers session.
+2. If no plan exists: the skill asks clarifying questions one at a time until requirements are unambiguous.
+3. If a plan/design doc exists in `docs/plans/`: the skill reads it and skips clarification.
 4. The skill auto-detects the optimal Mermaid diagram type based on the requirements.
 5. A Mermaid diagram is generated and presented for review.
 6. The user requests revisions or approves the diagram.

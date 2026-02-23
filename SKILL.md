@@ -1,6 +1,6 @@
 ---
 name: prompt-to-mermaid
-description: Use when a user describes something they want to build and requirements need clarification before implementation. Also triggers after superpowers:brainstorming or superpowers:writing-plans complete — offer to generate a Mermaid diagram from the existing design/plan. Triggers on vague feature requests, system design discussions, or "I want to build", "plan", "design", "let's architect".
+description: Use when a user wants to generate a Mermaid diagram, visualize a system flow, or says "create a diagram", "mermaid", "visualize the flow", "diagram this". Also use when a design doc or implementation plan exists in docs/plans/ and user asks to diagram it. Use when requirements are vague and need clarification before building — "I want to build", "plan", "design", "let's architect".
 ---
 
 # Prompt to Mermaid
@@ -13,12 +13,11 @@ Turn vague ideas into clear requirements and a Mermaid diagram that serves as a 
 digraph prompt_to_mermaid {
     "Entry point" [shape=diamond, label="How invoked?"];
     "User describes idea" [shape=doublecircle];
-    "Superpowers handoff" [shape=doublecircle, label="From brainstorming\nor writing-plans"];
+    "Post-plan invocation" [shape=doublecircle, label="Plan/design doc\nalready exists"];
     "Requirements clear?" [shape=diamond];
     "Ask ONE clarifying question" [shape=box];
     "Write requirements summary" [shape=box];
-    "Read existing design/plan doc" [shape=box];
-    "Ask: Generate Mermaid diagram?" [shape=diamond];
+    "Read existing plan doc" [shape=box];
     "Auto-detect diagram type" [shape=box];
     "Generate Mermaid diagram" [shape=box];
     "User approves diagram?" [shape=diamond];
@@ -26,10 +25,9 @@ digraph prompt_to_mermaid {
     "Ask: output format?" [shape=diamond, label="Ask: .mmd or .md?"];
     "Save file + show inline" [shape=box];
     "Prompt user to load diagram" [shape=doublecircle];
-    "User declines" [shape=doublecircle, label="Skip — continue\nnormal flow"];
 
     "Entry point" -> "User describes idea" [label="standalone"];
-    "Entry point" -> "Superpowers handoff" [label="from superpowers"];
+    "Entry point" -> "Post-plan invocation" [label="plan exists"];
 
     "User describes idea" -> "Requirements clear?";
     "Requirements clear?" -> "Ask ONE clarifying question" [label="no"];
@@ -37,10 +35,8 @@ digraph prompt_to_mermaid {
     "Requirements clear?" -> "Write requirements summary" [label="yes"];
     "Write requirements summary" -> "Auto-detect diagram type";
 
-    "Superpowers handoff" -> "Read existing design/plan doc";
-    "Read existing design/plan doc" -> "Ask: Generate Mermaid diagram?";
-    "Ask: Generate Mermaid diagram?" -> "Auto-detect diagram type" [label="yes"];
-    "Ask: Generate Mermaid diagram?" -> "User declines" [label="no"];
+    "Post-plan invocation" -> "Read existing plan doc";
+    "Read existing plan doc" -> "Auto-detect diagram type";
 
     "Auto-detect diagram type" -> "Generate Mermaid diagram";
     "Generate Mermaid diagram" -> "User approves diagram?";
@@ -52,29 +48,27 @@ digraph prompt_to_mermaid {
 }
 ```
 
-## Superpowers Integration
+## Using After Superpowers (Post-Plan Diagramming)
 
-This skill has two entry modes: **standalone** and **superpowers handoff**.
+This skill has two entry modes: **standalone** and **post-plan**.
 
-### When to offer the Mermaid prompt
+**Skills cannot inject themselves into other skills' workflows.** The superpowers:brainstorming and superpowers:writing-plans skills have closed flows that terminate on their own terms. This skill does NOT run automatically during those flows.
 
-If superpowers skills are available in the session, offer diagram generation at **both** of these points:
+### How to use after superpowers
 
-1. **After `superpowers:brainstorming`** — the design doc is approved and about to hand off to `writing-plans`. Ask:
-   > "Would you like to generate a Mermaid diagram from this design before moving to the implementation plan?"
-
-2. **After `superpowers:writing-plans`** — the implementation plan is complete. Ask:
-   > "Would you like to generate a Mermaid diagram from this plan? It can serve as a visual reference during implementation."
-
-If the user says **no**, continue the normal superpowers flow without interruption.
+After superpowers:brainstorming or superpowers:writing-plans completes, the user invokes this skill manually:
+- Say: "generate a mermaid diagram from the plan" or "/prompt-to-mermaid"
+- Or: "diagram this", "visualize the flow", "create a mermaid diagram"
 
 ### Fast path (skip Phase 1)
 
-When invoked from a superpowers handoff:
-- **Do NOT run Phase 1.** Requirements are already clarified in the design doc or plan.
-- Read the existing `docs/plans/*.md` document to extract actors, flows, and decisions.
+When a design doc or plan already exists (e.g., in `docs/plans/*.md` from a superpowers session):
+- **Skip Phase 1 entirely.** Requirements are already clarified in the existing document.
+- Read the existing doc to extract actors, flows, and decisions.
 - Jump directly to Phase 2 (diagram generation).
 - The existing plan doc serves as the requirements summary — no need to rewrite one.
+
+**How to detect post-plan mode:** Check if `docs/plans/` contains recent `.md` files. If a design doc or plan exists and was written in the current session context, treat this as post-plan mode and skip Phase 1.
 
 ## Phase 1: Requirement Clarification Loop
 
@@ -209,9 +203,7 @@ For `.md` format, structure the file as: a heading with the topic name, followed
 | Node labels are full sentences                  | Too verbose. Max 5 words per node.                     |
 | User said "sure, looks fine" without engagement | Diagram may be too abstract. Ask about specific flows. |
 | Saved file without user approval                | Never persist without explicit "yes, this is correct." |
-| Ran Phase 1 after superpowers handoff           | Fast path: design/plan doc IS the requirements. Skip to Phase 2. |
-| Forced diagram generation without asking        | Always ask. User may not want a diagram for every plan. |
-| Blocked superpowers flow on "no"                | If user declines, step aside. Don't stall the pipeline. |
+| Ran Phase 1 when a plan doc already exists      | Fast path: plan doc IS the requirements. Skip to Phase 2. |
 
 ## Common Mistakes
 
