@@ -1,16 +1,16 @@
 ---
-name: prompt-to-mermaid
+name: build-mermaid-spec
 description: Use when a user wants to generate a Mermaid diagram, visualize a system flow, or says "create a diagram", "mermaid", "visualize the flow", "diagram this". Also use when a design doc or implementation plan exists in docs/plans/ and user asks to diagram it. Use when requirements are vague and need clarification before building — "I want to build", "plan", "design", "let's architect".
 ---
 
-# Prompt to Mermaid
+# Build Mermaid Spec
 
-Turn vague ideas into clear requirements and a Mermaid diagram that serves as a machine-readable spec for implementation.
+AI agents produce better output when given a visual diagram rather than text descriptions. This skill turns vague ideas into clear requirements and a Mermaid diagram that serves as a machine-readable spec for implementation.
 
 ## Process Flow
 
 ```dot
-digraph prompt_to_mermaid {
+digraph build_mermaid_spec {
     "Entry point" [shape=diamond, label="How invoked?"];
     "User describes idea" [shape=doublecircle];
     "Post-plan invocation" [shape=doublecircle, label="Plan/design doc\nalready exists"];
@@ -57,7 +57,7 @@ This skill has two entry modes: **standalone** and **post-plan**.
 ### How to use after superpowers
 
 After superpowers:brainstorming or superpowers:writing-plans completes, the user invokes this skill manually:
-- Say: "generate a mermaid diagram from the plan" or "/prompt-to-mermaid"
+- Say: "generate a mermaid diagram from the plan" or "/build-mermaid-spec"
 - Or: "diagram this", "visualize the flow", "create a mermaid diagram"
 
 ### Fast path (skip Phase 1)

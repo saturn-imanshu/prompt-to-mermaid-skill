@@ -1,6 +1,8 @@
-# prompt-to-mermaid
+# build-mermaid-spec
 
-A Claude Code skill that turns vague ideas into clear requirements and a Mermaid diagram that serves as a machine-readable spec for implementation.
+AI agents produce significantly better output when given a visual diagram to understand the system flow rather than text descriptions alone. A Mermaid diagram encodes actors, decisions, data flow, and edge cases in a structured format that agents parse more reliably than prose -- resulting in fewer misunderstandings and more accurate implementations.
+
+This skill turns vague ideas into clear requirements and a Mermaid diagram that serves as a machine-readable spec for implementation.
 
 ## What It Does
 
@@ -14,7 +16,7 @@ The skill operates in three phases:
 
 ### Works After Superpowers
 
-If you use `superpowers:brainstorming` or `superpowers:writing-plans`, invoke this skill afterward (say "generate a mermaid diagram from the plan" or `/prompt-to-mermaid`). It detects the existing plan in `docs/plans/` and skips straight to diagram generation -- no re-clarification needed.
+If you use `superpowers:brainstorming` or `superpowers:writing-plans`, invoke this skill afterward (say "generate a mermaid diagram from the plan" or `/build-mermaid-spec`). It detects the existing plan in `docs/plans/` and skips straight to diagram generation -- no re-clarification needed.
 
 ### Auto-Detected Diagram Types
 
@@ -27,7 +29,7 @@ If you use `superpowers:brainstorming` or `superpowers:writing-plans`, invoke th
 ## Install
 
 ```
-npx skills add saturn-imanshu/prompt-to-mermaid-skill
+npx skills add saturn-imanshu/build-mermaid-spec
 ```
 
 ### Manual Install
@@ -35,7 +37,7 @@ npx skills add saturn-imanshu/prompt-to-mermaid-skill
 Clone or download this repository and symlink it into your skills directory:
 
 ```
-ln -s /path/to/prompt-to-mermaid-skill ~/.claude/skills/prompt-to-mermaid
+ln -s /path/to/build-mermaid-spec ~/.claude/skills/build-mermaid-spec
 ```
 
 ## How It Works
