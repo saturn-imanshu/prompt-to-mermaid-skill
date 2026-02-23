@@ -72,9 +72,7 @@ When a design doc or plan already exists (e.g., in `docs/plans/*.md` from a supe
 
 ## Phase 1: Requirement Clarification Loop
 
-<HARD-GATE>
-Do NOT generate any diagram or write any code until requirements are unambiguous. Every vague noun, verb, or interaction must be clarified.
-</HARD-GATE>
+**MANDATORY PREREQUISITE:** Do NOT generate any diagram or write any code until requirements are unambiguous. Every vague noun, verb, or interaction must be clarified.
 
 **How to clarify:**
 
@@ -117,8 +115,9 @@ Once requirements are confirmed, use the **Task tool to dispatch TWO parallel su
 
 After sub-agents complete, generate the Mermaid diagram following these rules:
 
-<MERMAID-GENERATION-PROMPT>
-You are converting a structured requirements summary into a Mermaid diagram.
+### Mermaid generation rules
+
+Convert the structured requirements summary into a Mermaid diagram using these rules:
 
 **Selecting diagram type:**
 Pick the type that best represents the PRIMARY relationship in the requirements:
@@ -150,7 +149,6 @@ Pick the type that best represents the PRIMARY relationship in the requirements:
 - Diamond `{}` for decisions
 - Cylinder `[()]` for databases/storage
 - Use `:::className` for highlighting critical paths only if needed
-  </MERMAID-GENERATION-PROMPT>
 
 ### Iteration loop
 
